@@ -1,72 +1,33 @@
-<!DOCTYPE html>
 <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+  </head>
+  <body>
+    <a-scene
+      embedded
+      mindar-image="imageTargetSrc:./objetivosimpresora.mind; autoStart: true"
+      color-space="sRGB"
+      renderer="colorManagement: true; physicallyCorrectLights: true"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <a-assets timeout="15000">
+        <a-asset-item id="greatWaveModel" src="./asus_strix_b-550-f_gaming_motherboard_realistic.gltf"></a-asset-item>
+      </a-assets>
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
-</head>
-
-<body>
-
-<a-scene
-  embedded
-  mindar-image="imageTargetSrc: ./targetsimpresora1.mind; autoStart: true"
-  color-space="sRGB"
-  renderer="colorManagement: true; physicallyCorrectLights: true"
-  vr-mode-ui="enabled: false"
-  device-orientation-permission-ui="enabled: false"
->
-
-  <a-assets timeout="30000">
-
-    <a-asset-item
-      id="impresora"
-      src="./impresora.glb">
-    </a-asset-item>
-
-  </a-assets>
-
-
-  <!-- Iluminación -->
-
-  <a-light
-    type="ambient"
-    intensity="3">
-  </a-light>
-
-  <a-light
-    type="directional"
-    intensity="4"
-    position="2 4 2">
-  </a-light>
-
-
-  <!-- Cámara -->
-
-  <a-camera
-    position="0 0 0"
-    look-controls="enabled: false">
-  </a-camera>
-
-
-  <!-- Target -->
-
-  <a-entity
-    mindar-image-target="targetIndex: 0">
-
-    <a-entity
-      gltf-model="#impresora"
-      position="0 0 0"
-      rotation="0 0 0"
-      scale="1 1 1">
-    </a-entity>
-
-  </a-entity>
-
-</a-scene>
-
-</body>
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-entity
+          gltf-model="#greatWaveModel"
+          rotation="0 180 0"
+          position="0 -2 1"
+          scale="1 1 1"
+        ></a-entity>
+      </a-entity>
+    </a-scene>
+  </body>
 </html>
