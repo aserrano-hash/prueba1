@@ -1,155 +1,33 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Impresora 3D AR</title>
-
-  <!-- A-Frame -->
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-
-  <!-- MindAR -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
-  <script>
-    // Ajusta automáticamente el tamaño del modelo 3D
-    AFRAME.registerComponent('ajustar-modelo', {
-
-      init: function () {
-
-        this.el.addEventListener('model-loaded', () => {
-
-          const modelo = this.el.getObject3D('mesh');
-
-          if (!modelo) {
-            console.log("No se encontró el modelo 3D");
-            return;
-          }
-
-          // Calculamos el tamaño real del modelo
-          const caja = new THREE.Box3().setFromObject(modelo);
-          const tamaño = new THREE.Vector3();
-
-          caja.getSize(tamaño);
-
-          console.log("Tamaño original:", tamaño);
-
-          // Buscamos la dimensión más grande
-          const mayor = Math.max(
-            tamaño.x,
-            tamaño.y,
-            tamaño.z
-          );
-
-          // Tamaño deseado
-          const tamañoDeseado = 1.5;
-
-          // Calculamos escala automática
-          const escala = tamañoDeseado / mayor;
-
-          // Aplicamos la misma escala en X, Y y Z
-          this.el.object3D.scale.set(
-            escala,
-            escala,
-            escala
-          );
-
-          console.log("Escala aplicada:", escala);
-
-          // Centramos el modelo
-          const centro = new THREE.Vector3();
-
-          caja.getCenter(centro);
-
-          modelo.position.sub(centro);
-
-        });
-      }
-    });
-  </script>
-
-</head>
-
-<body>
-
-<a-scene
-
-  mindar-image="
-    imageTargetSrc: ./objetivosimpresora1.mind;
-  "
-
-  color-space="sRGB"
-
-  renderer="
-    colorManagement: true;
-    physicallyCorrectLights: true;
-  "
-
-  vr-mode-ui="enabled: false"
-
-  device-orientation-permission-ui="enabled: false"
->
-
-  <!-- MODELO 3D -->
-  <a-assets>
-
-    <a-asset-item
-      id="impresora"
-      src="./impresora1/impresora.glb">
-    </a-asset-item>
-
-  </a-assets>
-
-
-  <!-- ILUMINACIÓN -->
-
-  <a-light
-    type="ambient"
-    intensity="2">
-  </a-light>
-
-  <a-light
-    type="directional"
-    position="2 4 2"
-    intensity="3">
-  </a-light>
-
-
-  <!-- CÁMARA -->
-
-  <a-camera
-    position="0 0 0"
-    look-controls="enabled: false">
-  </a-camera>
-
-
-  <!-- OBJETIVO -->
-
-  <a-entity
-    mindar-image-target="targetIndex: 0"
-  >
-
-    <!-- IMPRESORA 3D -->
-
-    <a-gltf-model
-
-      src="#impresora"
-
-      position="0 0 0"
-
-      rotation="0 0 0"
-
-      scale="1 1 1"
-
-      ajustar-modelo
-
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+  </head>
+  <body>
+    <a-scene
+      embedded
+      mindar-image="imageTargetSrc:./targetsimpresora1.mind; autoStart: true"
+      color-space="sRGB"
+      renderer="colorManagement: true; physicallyCorrectLights: true"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
     >
-    </a-gltf-model>
+      <a-assets timeout="15000">
+        <a-asset-item id="greatWaveModel" src="./Impresora1/scene.gltf"></a-asset-item>
+      </a-assets>
 
-  </a-entity>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-</a-scene>
-
-</body>
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-entity
+          gltf-model="#greatWaveModel"
+          rotation="0 180 0"
+          position="0 -2 1"
+          scale="1 1 1"
+        ></a-entity>
+      </a-entity>
+    </a-scene>
+  </body>
 </html>
